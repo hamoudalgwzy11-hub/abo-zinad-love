@@ -1,0 +1,1582 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#8B0A2E">
+<meta name="description" content="Abo Zinad Love - تطبيق نسبة الحب والأبراج">
+<meta name="author" content="Abo Zinad">
+<title>❤️ Abo Zinad Love</title>
+
+<!-- PWA Manifest -->
+<link rel="manifest" href="/manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Abo Zinad Love">
+<link rel="apple-touch-icon" href="/icon-192.png">
+<link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">
+<link rel="icon" type="image/png" sizes="512x512" href="/icon-512.png">
+
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', 'Tahoma', sans-serif; -webkit-tap-highlight-color: transparent; }
+html, body { overflow-x: hidden; }
+
+body {
+    min-height: 100vh;
+    background: radial-gradient(ellipse at top, #1a0510 0%, #0a0510 50%, #050508 100%);
+    color: #f5e6d3;
+    padding: 20px;
+    position: relative;
+    overflow-y: auto;
+    transition: background 0.4s, color 0.4s;
+}
+
+body.light-mode {
+    background: radial-gradient(ellipse at top, #fdf2f8 0%, #fce7f3 50%, #f9fafb 100%);
+    color: #2d1b3d;
+}
+body.light-mode .card { background: rgba(255,255,255,0.85); border-color: rgba(139,10,46,0.2); }
+body.light-mode input, body.light-mode select { background: rgba(255,255,255,0.9); color: #2d1b3d; border-color: rgba(139,10,46,0.3); }
+body.light-mode .menu-title { color: #2d1b3d; }
+body.light-mode .section-title { color: #8B0A2E; }
+body.light-mode .app-title { background: linear-gradient(135deg, #8B0A2E, #d4af7a, #8B0A2E); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+body.light-mode .info-label { color: #8B0A2E; }
+body.light-mode .item-list li { color: #4a1a4a; background: rgba(255,255,255,0.6); }
+body.light-mode .tip-text { color: #4a1a4a; }
+body.light-mode .zodiac-desc-text { color: #4a1a4a; }
+body.light-mode .result-message { color: #4a1a4a; }
+body.light-mode .setting-label { color: #2d1b3d; }
+body.light-mode .about-message { color: #4a1a4a; }
+
+body.font-small { font-size: 13px; }
+body.font-medium { font-size: 15px; }
+body.font-large { font-size: 17px; }
+
+.stars-bg {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 0;
+    transition: opacity 0.4s;
+}
+.stars-bg.hidden { opacity: 0; }
+.star {
+    position: absolute;
+    background: #fff;
+    border-radius: 50%;
+    animation: twinkle 3s infinite;
+    box-shadow: 0 0 3px #fff;
+}
+@keyframes twinkle {
+    0%, 100% { opacity: 0.2; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.5); }
+}
+
+.petal {
+    position: fixed;
+    font-size: 20px;
+    animation: fall 10s linear infinite;
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0;
+}
+@keyframes fall {
+    0% { transform: translateY(-100px) rotate(0deg); opacity: 0; }
+    10% { opacity: 0.7; }
+    90% { opacity: 0.7; }
+    100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+}
+body.no-petals .petal { display: none; }
+
+.app { max-width: 500px; margin: 0 auto; position: relative; z-index: 10; }
+
+.app-header { text-align: center; padding: 30px 20px 20px; }
+.logo-heart {
+    font-size: 70px;
+    filter: drop-shadow(0 0 20px rgba(139, 10, 46, 0.8));
+    animation: pulse 2s infinite;
+    margin-bottom: 10px;
+}
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.08); }
+}
+.app-title {
+    font-size: 26px;
+    font-weight: 800;
+    background: linear-gradient(135deg, #d4af7a 0%, #f5e6d3 50%, #d4af7a 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: 1px;
+    margin-bottom: 5px;
+}
+.app-subtitle {
+    color: #8b6f8f;
+    font-size: 13px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+.section-title {
+    color: #d4af7a;
+    font-size: 15px;
+    font-weight: bold;
+    margin: 20px 0 12px;
+    text-align: right;
+    letter-spacing: 1px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.section-title::before {
+    content: '';
+    width: 4px;
+    height: 20px;
+    background: linear-gradient(180deg, #d4af7a, #8B0A2E);
+    border-radius: 2px;
+}
+
+.card {
+    background: rgba(21, 16, 31, 0.7);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(212, 175, 122, 0.15);
+    border-radius: 20px;
+    padding: 25px 20px;
+    margin-bottom: 15px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(212, 175, 122, 0.1);
+    position: relative;
+    overflow: hidden;
+}
+.card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #d4af7a, transparent);
+    opacity: 0.5;
+}
+
+.menu-card {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    padding: 22px 20px;
+    margin-bottom: 12px;
+}
+.menu-card:active {
+    transform: translateY(-3px) scale(1.02);
+    border-color: rgba(212, 175, 122, 0.4);
+    box-shadow: 0 15px 50px rgba(139, 10, 46, 0.4), inset 0 1px 0 rgba(212, 175, 122, 0.2);
+}
+.menu-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+    flex-shrink: 0;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+.icon-love { background: linear-gradient(135deg, #8B0A2E, #5C0016); }
+.icon-zodiac { background: linear-gradient(135deg, #2d1b3d, #1a0f1f); }
+.icon-compat { background: linear-gradient(135deg, #4a1a4a, #2d1b3d); }
+.icon-info { background: linear-gradient(135deg, #3d1a1a, #1a0510); }
+.icon-tip { background: linear-gradient(135deg, #2a3d1a, #1a2d0f); }
+.icon-soul { background: linear-gradient(135deg, #8B0A2E, #4a1a4a); }
+.icon-settings { background: linear-gradient(135deg, #1a2d3d, #0f1a2d); }
+.icon-about { background: linear-gradient(135deg, #3d2d1a, #1a150f); }
+
+.menu-content { flex: 1; text-align: right; }
+.menu-title { color: #f5e6d3; font-size: 17px; font-weight: bold; margin-bottom: 5px; letter-spacing: 0.5px; }
+.menu-desc { color: #8b6f8f; font-size: 12px; line-height: 1.4; }
+.menu-arrow { color: #d4af7a; font-size: 22px; opacity: 0.6; transition: 0.3s; }
+.menu-card:active .menu-arrow { opacity: 1; transform: translateX(-5px); }
+
+input, select {
+    width: 100%;
+    padding: 16px 18px;
+    background: rgba(10, 5, 16, 0.8);
+    border: 1px solid rgba(212, 175, 122, 0.2);
+    border-radius: 14px;
+    color: #f5e6d3;
+    font-size: 15px;
+    text-align: center;
+    outline: none;
+    transition: all 0.3s;
+    font-family: inherit;
+    margin-bottom: 12px;
+    appearance: none;
+    -webkit-appearance: none;
+}
+input:focus, select:focus {
+    border-color: #d4af7a;
+    box-shadow: 0 0 0 4px rgba(212, 175, 122, 0.1);
+}
+input::placeholder { color: #5a4a5f; }
+select {
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%23d4af7a'%3e%3cpath d='M2 5l6 6 6-6z'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: left 15px center;
+    padding-left: 40px;
+}
+select option { background: #15101f; color: #f5e6d3; }
+body.light-mode select option { background: #fff; color: #2d1b3d; }
+
+.btn-primary {
+    width: 100%;
+    padding: 18px;
+    background: linear-gradient(135deg, #8B0A2E 0%, #5C0016 100%);
+    color: #f5e6d3;
+    border: 1px solid rgba(212, 175, 122, 0.4);
+    border-radius: 14px;
+    font-size: 17px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-family: inherit;
+    letter-spacing: 1px;
+    box-shadow: 0 10px 30px rgba(139, 10, 46, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    margin-top: 8px;
+}
+.btn-primary:active {
+    transform: translateY(-2px);
+    box-shadow: 0 15px 40px rgba(139, 10, 46, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.btn-secondary {
+    width: 100%;
+    padding: 14px;
+    background: rgba(45, 27, 61, 0.5);
+    color: #d4af7a;
+    border: 1px solid rgba(212, 175, 122, 0.3);
+    border-radius: 14px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: 0.3s;
+    font-family: inherit;
+    margin-top: 10px;
+    letter-spacing: 0.5px;
+}
+.btn-secondary:active { background: rgba(45, 27, 61, 0.8); border-color: #d4af7a; }
+
+.progress-bar {
+    width: 100%;
+    height: 6px;
+    background: rgba(212, 175, 122, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 15px 0 10px;
+}
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #8B0A2E, #d4af7a);
+    width: 0%;
+    transition: width 0.3s;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(212, 175, 122, 0.5);
+}
+
+.result-section {
+    display: none;
+    margin-top: 20px;
+    padding: 25px 20px;
+    background: linear-gradient(135deg, rgba(139, 10, 46, 0.2), rgba(45, 27, 61, 0.4));
+    border: 1px solid rgba(212, 175, 122, 0.3);
+    border-radius: 20px;
+    text-align: center;
+    animation: fadeIn 0.8s;
+}
+.result-section.show { display: block; }
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.percent-ring {
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    background: conic-gradient(#d4af7a 0%, rgba(212, 175, 122, 0.1) 0%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 20px auto;
+    position: relative;
+    box-shadow: 0 0 40px rgba(212, 175, 122, 0.3), inset 0 0 20px rgba(139, 10, 46, 0.5);
+}
+.percent-ring::before {
+    content: '';
+    position: absolute;
+    width: 130px; height: 130px;
+    background: radial-gradient(circle, #15101f, #0a0510);
+    border-radius: 50%;
+    border: 1px solid rgba(212, 175, 122, 0.2);
+}
+.percent-num {
+    position: relative;
+    z-index: 2;
+    font-size: 38px;
+    font-weight: bold;
+    background: linear-gradient(135deg, #d4af7a, #f5e6d3);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+.result-names {
+    color: #d4af7a;
+    font-size: 18px;
+    font-weight: bold;
+    margin: 10px 0;
+    letter-spacing: 1px;
+}
+.result-message {
+    color: #f5e6d3;
+    font-size: 14px;
+    line-height: 1.7;
+    margin-bottom: 20px;
+}
+
+.tabs {
+    display: flex;
+    gap: 5px;
+    margin-top: 20px;
+    background: rgba(10, 5, 16, 0.6);
+    padding: 5px;
+    border-radius: 14px;
+    border: 1px solid rgba(212, 175, 122, 0.15);
+}
+.tab {
+    flex: 1;
+    padding: 10px 5px;
+    text-align: center;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 11px;
+    color: #8b6f8f;
+    transition: all 0.3s;
+    font-weight: 600;
+    user-select: none;
+}
+.tab.active {
+    background: linear-gradient(135deg, #8B0A2E, #4a1a4a);
+    color: #f5e6d3;
+    box-shadow: 0 5px 15px rgba(139, 10, 46, 0.4);
+}
+.tab-content { display: none; }
+.tab-content.active { display: block; animation: fadeIn 0.4s; }
+
+.item-list { list-style: none; padding: 0; text-align: right; }
+.item-list li {
+    padding: 12px 14px;
+    background: rgba(10, 5, 16, 0.6);
+    border-radius: 12px;
+    margin-bottom: 8px;
+    color: #d4c5a3;
+    font-size: 13px;
+    position: relative;
+    padding-right: 42px;
+    line-height: 1.5;
+    border-right: 3px solid #8B0A2E;
+}
+.item-list li::before {
+    content: "❤️";
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 14px;
+}
+.item-list li.neg { border-right-color: #5a4a5f; }
+.item-list li.neg::before { content: "💔"; }
+
+.zodiac-display {
+    text-align: center;
+    padding: 20px 15px;
+    background: rgba(10, 5, 16, 0.6);
+    border-radius: 18px;
+    margin-bottom: 12px;
+    border: 1px solid rgba(212, 175, 122, 0.2);
+}
+.zodiac-symbol-big {
+    font-size: 80px;
+    filter: drop-shadow(0 0 20px rgba(212, 175, 122, 0.6));
+    margin-bottom: 10px;
+}
+.zodiac-name-big {
+    color: #d4af7a;
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 5px;
+    letter-spacing: 1px;
+}
+.zodiac-dates-big { color: #8b6f8f; font-size: 13px; margin-bottom: 12px; }
+.zodiac-element {
+    display: inline-block;
+    padding: 5px 14px;
+    background: rgba(139, 10, 46, 0.3);
+    border: 1px solid rgba(212, 175, 122, 0.3);
+    border-radius: 20px;
+    color: #d4af7a;
+    font-size: 12px;
+    margin-bottom: 15px;
+}
+.zodiac-desc-text {
+    color: #c4b59f;
+    font-size: 13px;
+    line-height: 1.7;
+    padding: 0 5px;
+    margin-bottom: 15px;
+    font-style: italic;
+}
+.traits-grid { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; }
+.trait-badge {
+    padding: 6px 12px;
+    background: linear-gradient(135deg, rgba(139, 10, 46, 0.4), rgba(45, 27, 61, 0.4));
+    border: 1px solid rgba(212, 175, 122, 0.3);
+    border-radius: 20px;
+    color: #d4af7a;
+    font-size: 11px;
+}
+
+.info-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 12px;
+    background: rgba(10, 5, 16, 0.5);
+    border-radius: 10px;
+    margin-bottom: 6px;
+    font-size: 13px;
+}
+.info-label { color: #8b6f8f; }
+.info-value { color: #d4af7a; font-weight: bold; }
+
+.tip-card {
+    padding: 18px;
+    background: linear-gradient(135deg, rgba(74, 26, 74, 0.4), rgba(139, 10, 46, 0.2));
+    border: 1px solid rgba(212, 175, 122, 0.3);
+    border-radius: 15px;
+    text-align: right;
+    margin-top: 15px;
+}
+.tip-label { color: #d4af7a; font-weight: bold; font-size: 13px; margin-bottom: 8px; letter-spacing: 1px; }
+.tip-text { color: #d4c5a3; font-size: 13px; line-height: 1.7; }
+
+.main-menu { display: block; }
+.section-page { display: none; }
+.section-page.active { display: block; animation: fadeIn 0.5s; }
+
+.back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    background: rgba(45, 27, 61, 0.5);
+    color: #d4af7a;
+    border: 1px solid rgba(212, 175, 122, 0.3);
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 13px;
+    margin-bottom: 15px;
+    transition: 0.3s;
+    font-family: inherit;
+}
+.back-btn:active { background: rgba(45, 27, 61, 0.8); border-color: #d4af7a; }
+
+.zodiac-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.zodiac-mini {
+    padding: 12px 5px;
+    background: rgba(10, 5, 16, 0.6);
+    border: 1px solid rgba(212, 175, 122, 0.15);
+    border-radius: 14px;
+    text-align: center;
+    cursor: pointer;
+    transition: 0.3s;
+}
+.zodiac-mini:active {
+    background: rgba(139, 10, 46, 0.2);
+    border-color: #d4af7a;
+    transform: scale(1.05);
+}
+.zodiac-mini-symbol { font-size: 32px; margin-bottom: 5px; filter: drop-shadow(0 0 10px rgba(212, 175, 122, 0.4)); }
+.zodiac-mini-name { color: #d4af7a; font-size: 11px; font-weight: bold; }
+
+.soulmate-box {
+    text-align: center;
+    padding: 30px 20px;
+    background: linear-gradient(135deg, rgba(139, 10, 46, 0.3), rgba(74, 26, 74, 0.3));
+    border-radius: 20px;
+    margin-top: 15px;
+    border: 1px solid rgba(212, 175, 122, 0.3);
+    display: none;
+}
+.soulmate-box.show { display: block; animation: fadeIn 0.6s; }
+.soulmate-letter-big {
+    font-size: 90px;
+    font-weight: bold;
+    background: linear-gradient(135deg, #d4af7a, #f5e6d3, #d4af7a);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: pulse 2s infinite;
+    line-height: 1;
+    margin: 15px 0;
+    filter: drop-shadow(0 0 30px rgba(212, 175, 122, 0.5));
+}
+.soulmate-label { color: #d4af7a; font-size: 14px; letter-spacing: 2px; text-transform: uppercase; }
+
+.setting-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 16px;
+    background: rgba(10, 5, 16, 0.5);
+    border-radius: 12px;
+    margin-bottom: 8px;
+}
+.setting-label {
+    color: #f5e6d3;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.setting-label-icon { font-size: 20px; }
+
+.toggle-switch {
+    position: relative;
+    width: 50px;
+    height: 28px;
+    background: rgba(90, 74, 95, 0.5);
+    border-radius: 14px;
+    cursor: pointer;
+    transition: 0.3s;
+    flex-shrink: 0;
+}
+.toggle-switch.on { background: linear-gradient(135deg, #8B0A2E, #d4af7a); }
+.toggle-switch::before {
+    content: '';
+    position: absolute;
+    top: 3px;
+    right: 3px;
+    width: 22px;
+    height: 22px;
+    background: #f5e6d3;
+    border-radius: 50%;
+    transition: 0.3s;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+}
+.toggle-switch.on::before { right: calc(100% - 25px); }
+
+.about-card { text-align: center; padding: 30px 20px; }
+.about-logo { font-size: 80px; margin-bottom: 15px; filter: drop-shadow(0 0 30px rgba(139, 10, 46, 0.8)); }
+.about-title {
+    font-size: 24px;
+    font-weight: 800;
+    background: linear-gradient(135deg, #d4af7a, #f5e6d3);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: 2px;
+    margin-bottom: 5px;
+}
+.about-version { color: #8b6f8f; font-size: 13px; margin-bottom: 20px; letter-spacing: 1px; }
+.about-divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, #d4af7a, transparent);
+    margin: 20px 0;
+    opacity: 0.4;
+}
+.about-label {
+    color: #8b6f8f;
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+}
+.about-name {
+    color: #d4af7a;
+    font-size: 20px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    margin-bottom: 15px;
+    filter: drop-shadow(0 0 10px rgba(212, 175, 122, 0.4));
+}
+.about-copy { color: #5a4a5f; font-size: 12px; letter-spacing: 1px; margin-top: 15px; }
+.about-message { color: #d4c5a3; font-size: 13px; line-height: 1.7; margin: 15px 0; font-style: italic; }
+
+.footer {
+    text-align: center;
+    padding: 25px 15px;
+    color: #5a4a5f;
+    font-size: 11px;
+    letter-spacing: 1px;
+}
+.footer-name { color: #d4af7a; font-weight: bold; letter-spacing: 2px; }
+
+@media (max-width: 400px) {
+    .app-title { font-size: 22px; }
+    .logo-heart { font-size: 60px; }
+    .percent-ring { width: 140px; height: 140px; }
+    .percent-ring::before { width: 112px; height: 112px; }
+    .percent-num { font-size: 32px; }
+    .zodiac-symbol-big { font-size: 65px; }
+}
+</style>
+</head>
+<body>
+
+<div class="stars-bg" id="stars-bg"></div>
+
+<div class="app">
+    
+    <div class="app-header">
+        <div class="logo-heart">❤️</div>
+        <div class="app-title">ABO ZINAD LOVE</div>
+        <div class="app-subtitle">Love Calculator Pro</div>
+    </div>
+    
+    <div class="main-menu" id="main-menu">
+        
+        <div class="section-title">✨ اختر القسم</div>
+        
+        <div class="card menu-card" onclick="showSection('love-calc')">
+            <div class="menu-icon icon-love">💕</div>
+            <div class="menu-content">
+                <div class="menu-title">نسبة الحب</div>
+                <div class="menu-desc">اكتشف نسبة الحب بينك وبين من تحب</div>
+            </div>
+            <div class="menu-arrow">‹</div>
+        </div>
+        
+        <div class="card menu-card" onclick="showSection('zodiac-find')">
+            <div class="menu-icon icon-zodiac">♈</div>
+            <div class="menu-content">
+                <div class="menu-title">معرفة البرج</div>
+                <div class="menu-desc">اكتشف برجك من تاريخ ميلادك</div>
+            </div>
+            <div class="menu-arrow">‹</div>
+        </div>
+        
+        <div class="card menu-card" onclick="showSection('zodiac-compat')">
+            <div class="menu-icon icon-compat">💞</div>
+            <div class="menu-content">
+                <div class="menu-title">توافق الأبراج</div>
+                <div class="menu-desc">نسبة التوافق بين برجين</div>
+            </div>
+            <div class="menu-arrow">‹</div>
+        </div>
+        
+        <div class="card menu-card" onclick="showSection('zodiac-info')">
+            <div class="menu-icon icon-info">🔮</div>
+            <div class="menu-content">
+                <div class="menu-title">معلومات الأبراج</div>
+                <div class="menu-desc">كل شيء عن الأبراج الـ 12</div>
+            </div>
+            <div class="menu-arrow">‹</div>
+        </div>
+        
+        <div class="card menu-card" onclick="showSection('soulmate')">
+            <div class="menu-icon icon-soul">💫</div>
+            <div class="menu-content">
+                <div class="menu-title">شريك الروح</div>
+                <div class="menu-desc">اكتشف حرف شريك روحك</div>
+            </div>
+            <div class="menu-arrow">‹</div>
+        </div>
+        
+        <div class="card menu-card" onclick="showSection('daily-tip')">
+            <div class="menu-icon icon-tip">🌟</div>
+            <div class="menu-content">
+                <div class="menu-title">نصيحة اليوم</div>
+                <div class="menu-desc">نصيحة رومانسية كل يوم</div>
+            </div>
+            <div class="menu-arrow">‹</div>
+        </div>
+        
+        <div class="card menu-card" onclick="showSection('settings-page')">
+            <div class="menu-icon icon-settings">⚙️</div>
+            <div class="menu-content">
+                <div class="menu-title">الإعدادات</div>
+                <div class="menu-desc">تخصيص التطبيق حسب ذوقك</div>
+            </div>
+            <div class="menu-arrow">‹</div>
+        </div>
+        
+        <div class="card menu-card" onclick="showSection('about-page')">
+            <div class="menu-icon icon-about">ℹ️</div>
+            <div class="menu-content">
+                <div class="menu-title">حول التطبيق</div>
+                <div class="menu-desc">معلومات المطور والإصدار</div>
+            </div>
+            <div class="menu-arrow">‹</div>
+        </div>
+        
+    </div>
+    
+    <!-- صفحة نسبة الحب -->
+    <div class="section-page" id="love-calc">
+        <button class="back-btn" onclick="showMain()">← الرجوع</button>
+        <div class="card">
+            <div class="section-title">💕 نسبة الحب</div>
+            <input type="text" id="name1" placeholder="✍️ اسمك..." autocomplete="off">
+            <input type="text" id="name2" placeholder="💝 اسم من تحب..." autocomplete="off">
+            <button class="btn-secondary" onclick="toggleAdvanced()">⚙️ أضف توافق الأبراج (اختياري)</button>
+            <div id="advanced-inputs" style="display:none; margin-top:12px;">
+                <input type="date" id="date1">
+                <input type="date" id="date2">
+            </div>
+            <button class="btn-primary" onclick="calculateLove()">✨ احسب النسبة</button>
+            
+            <div id="processing" style="display:none; margin-top:20px; text-align:center;">
+                <div style="font-size:50px; animation:pulse 1s infinite;">💗</div>
+                <div id="proc-text" style="color:#d4af7a; margin:12px 0; font-size:14px;">جاري فحص القلوب...</div>
+                <div class="progress-bar"><div class="progress-fill" id="proc-fill"></div></div>
+                <div id="proc-percent" style="color:#d4af7a; font-size:12px;">0%</div>
+            </div>
+            
+            <div class="result-section" id="result">
+                <div class="result-names" id="result-names"></div>
+                <div class="percent-ring" id="percent-ring">
+                    <div class="percent-num" id="percent-num">0%</div>
+                </div>
+                <div class="result-message" id="result-message"></div>
+                
+                <div class="tabs">
+                    <div class="tab active" onclick="switchTab(this, 'positives')">💚 إيجابيات</div>
+                    <div class="tab" onclick="switchTab(this, 'negatives')">💔 سلبيات</div>
+                    <div class="tab" onclick="switchTab(this, 'zodiac-res')">✨ أبراج</div>
+                </div>
+                
+                <div class="tab-content active" id="positives">
+                    <ul class="item-list" id="positives-list"></ul>
+                </div>
+                <div class="tab-content" id="negatives">
+                    <ul class="item-list" id="negatives-list"></ul>
+                </div>
+                <div class="tab-content" id="zodiac-res">
+                    <div class="zodiac-display" id="z1-display"></div>
+                    <div class="zodiac-display" id="z2-display"></div>
+                    <div id="compat-display" style="display:none; text-align:center; padding:15px; background:rgba(139,10,46,0.2); border-radius:15px; margin-top:10px;">
+                        <div style="color:#d4af7a; font-size:13px; margin-bottom:5px;">💞 توافق الأبراج</div>
+                        <div style="font-size:32px; font-weight:bold; background:linear-gradient(135deg,#d4af7a,#f5e6d3);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;" id="compat-value">0%</div>
+                    </div>
+                </div>
+                
+                <div class="tip-card">
+                    <div class="tip-label">💡 نصيحة للعلاقة</div>
+                    <div class="tip-text" id="advice-text"></div>
+                </div>
+                
+                <button class="btn-primary" onclick="shareResult()" style="margin-top:15px;">📤 شارك النتيجة</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- صفحة معرفة البرج -->
+    <div class="section-page" id="zodiac-find">
+        <button class="back-btn" onclick="showMain()">← الرجوع</button>
+        <div class="card">
+            <div class="section-title">♈ معرفة البرج</div>
+            <input type="date" id="find-date">
+            <button class="btn-primary" onclick="findZodiac()">🔮 اكتشف برجك</button>
+            <div id="find-result" style="display:none; margin-top:20px;"></div>
+        </div>
+    </div>
+    
+    <!-- صفحة توافق الأبراج -->
+    <div class="section-page" id="zodiac-compat">
+        <button class="back-btn" onclick="showMain()">← الرجوع</button>
+        <div class="card">
+            <div class="section-title">💞 توافق الأبراج</div>
+            <select id="compat-1"><option value="">-- اختر برجك --</option></select>
+            <select id="compat-2"><option value="">-- اختر برجه --</option></select>
+            <button class="btn-primary" onclick="calculateCompat()">💖 احسب التوافق</button>
+            <div id="compat-result" style="display:none; margin-top:20px;"></div>
+        </div>
+    </div>
+    
+    <!-- صفحة معلومات الأبراج -->
+    <div class="section-page" id="zodiac-info">
+        <button class="back-btn" onclick="showMain()">← الرجوع</button>
+        <div class="card">
+            <div class="section-title">🔮 الأبراج الـ 12</div>
+            <div class="zodiac-grid" id="zodiac-grid"></div>
+            <div id="zodiac-detail" style="display:none; margin-top:20px;"></div>
+        </div>
+    </div>
+    
+    <!-- صفحة شريك الروح -->
+    <div class="section-page" id="soulmate">
+        <button class="back-btn" onclick="showMain()">← الرجوع</button>
+        <div class="card">
+            <div class="section-title">💫 شريك الروح</div>
+            <input type="text" id="soul-name" placeholder="✍️ اسمك...">
+            <button class="btn-primary" onclick="findSoulmate()">✨ اكتشف الحرف</button>
+            <div class="soulmate-box" id="soulmate-box">
+                <div class="soulmate-label">حرف شريك روحك</div>
+                <div class="soulmate-letter-big" id="soulmate-letter">?</div>
+                <div style="color:#8b6f8f; font-size:12px; margin-top:10px;">بناءً على اسمك</div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- صفحة نصيحة اليوم -->
+    <div class="section-page" id="daily-tip">
+        <button class="back-btn" onclick="showMain()">← الرجوع</button>
+        <div class="card">
+            <div class="section-title">🌟 نصيحة اليوم</div>
+            <div class="tip-card" style="padding:30px 20px; text-align:center; margin-top:15px;">
+                <div style="font-size:50px; margin-bottom:15px;">💌</div>
+                <div class="tip-text" id="daily-tip-text" style="font-size:15px; line-height:1.8;"></div>
+            </div>
+            <button class="btn-primary" onclick="newTip()" style="margin-top:15px;">🔄 نصيحة أخرى</button>
+        </div>
+    </div>
+    
+    <!-- صفحة الإعدادات -->
+    <div class="section-page" id="settings-page">
+        <button class="back-btn" onclick="showMain()">← الرجوع</button>
+        <div class="card">
+            <div class="section-title">⚙️ الإعدادات</div>
+            <div class="setting-row">
+                <div class="setting-label"><span class="setting-label-icon">🌙</span> الوضع الليلي</div>
+                <div class="toggle-switch" id="toggle-dark" onclick="toggleSetting('dark')"></div>
+            </div>
+            <div class="setting-row">
+                <div class="setting-label"><span class="setting-label-icon">🔊</span> الأصوات</div>
+                <div class="toggle-switch" id="toggle-sound" onclick="toggleSetting('sound')"></div>
+            </div>
+            <div class="setting-row">
+                <div class="setting-label"><span class="setting-label-icon">🌟</span> النجوم</div>
+                <div class="toggle-switch" id="toggle-stars" onclick="toggleSetting('stars')"></div>
+            </div>
+            <div class="setting-row">
+                <div class="setting-label"><span class="setting-label-icon">🌹</span> البتلات</div>
+                <div class="toggle-switch" id="toggle-petals" onclick="toggleSetting('petals')"></div>
+            </div>
+            <div class="setting-row">
+                <div class="setting-label"><span class="setting-label-icon">🔤</span> حجم الخط</div>
+                <select id="font-size" onchange="changeFont(this.value)" style="width:auto; margin:0; padding:8px 30px 8px 12px;">
+                    <option value="small">صغير</option>
+                    <option value="medium" selected>متوسط</option>
+                    <option value="large">كبير</option>
+                </select>
+            </div>
+            <button class="btn-secondary" onclick="resetSettings()" style="margin-top:20px;">🔄 إعادة تعيين الإعدادات</button>
+        </div>
+    </div>
+    
+    <!-- صفحة حول -->
+    <div class="section-page" id="about-page">
+        <button class="back-btn" onclick="showMain()">← الرجوع</button>
+        <div class="card about-card">
+            <div class="about-logo">❤️</div>
+            <div class="about-title">ABO ZINAD LOVE</div>
+            <div class="about-version">الإصدار 1.0.0</div>
+            <div class="about-divider"></div>
+            <div class="about-message">
+                "تطبيق رومانسي فاخر يجمع بين الترفيه والمتعة،<br>
+                صُنع بحب لكل القلوب العاشقة"
+            </div>
+            <div class="about-divider"></div>
+            <div class="about-label">👨‍💻 المطور</div>
+            <div class="about-name">Abo Zinad</div>
+            <div class="about-label">✨ برمجة وتصميم</div>
+            <div class="about-copy">© 2026 - جميع الحقوق محفوظة</div>
+        </div>
+    </div>
+    
+    <div class="footer">
+        Made with <span style="color:#8B0A2E">❤</span> by <span class="footer-name">Abo Zinad</span><br>
+        <span style="font-size:10px; opacity:0.7;">© 2026 Abo Zinad Love</span>
+    </div>
+    
+</div>
+
+<script>
+// ==================== بيانات الأبراج ====================
+const ZODIAC_DATA = [
+    { name: "الحمل", symbol: "♈", dates: "21 مارس - 19 أبريل", element: "نار", element_icon: "🔥",
+      traits: ["شجاع", "متحمس", "قيادي", "مبادر"], lucky_color: "الأحمر", lucky_stone: "الألماس",
+      lucky_day: "الثلاثاء", lucky_number: 9,
+      desc: "مولود الحمل شخصية قيادية لا تعرف الخوف، يحب المبادرة والمغامرة.",
+      love_style: "يحب بسرعة، شغوف، يحتاج الحرية والاهتمام",
+      best_match: "القوس", worst_match: "الأسد" },
+    { name: "الثور", symbol: "♉", dates: "20 أبريل - 20 مايو", element: "أرض", element_icon: "🌍",
+      traits: ["صبور", "موثوق", "مخلص", "عملي"], lucky_color: "الأخضر", lucky_stone: "الزمرد",
+      lucky_day: "الجمعة", lucky_number: 6,
+      desc: "مولود الثور شخصية هادئة ومستقرة، يحب الحياة الهادئة والعلاقات الدائمة.",
+      love_style: "مخلص جداً، يحب الاستقرار، بطيء في الحب لكن دائم",
+      best_match: "الجدي", worst_match: "الحمل" },
+    { name: "الجوزاء", symbol: "♊", dates: "21 مايو - 20 يونيو", element: "هواء", element_icon: "💨",
+      traits: ["ذكي", "اجتماعي", "مرن", "فضولي"], lucky_color: "الأصفر", lucky_stone: "العقيق",
+      lucky_day: "الأربعاء", lucky_number: 5,
+      desc: "مولود الجوزاء سريع البديهة، اجتماعي، يحب التعلم والتواصل.",
+      love_style: "يحتاج عقلاً متطابقاً، سريع الملل، يحب المحادثات العميقة",
+      best_match: "الميزان", worst_match: "العذراء" },
+    { name: "السرطان", symbol: "♋", dates: "21 يونيو - 22 يوليو", element: "ماء", element_icon: "💧",
+      traits: ["عاطفي", "حنون", "مخلص", "حدسي"], lucky_color: "الفضي", lucky_stone: "اللؤلؤ",
+      lucky_day: "الاثنين", lucky_number: 2,
+      desc: "مولود السرطان عاطفي وحنون، يهتم بالعائلة والأصدقاء بعمق.",
+      love_style: "عاطفي جداً، يحتاج الأمان، مخلص وحساس",
+      best_match: "الجدي", worst_match: "الميزان" },
+    { name: "الأسد", symbol: "♌", dates: "23 يوليو - 22 أغسطس", element: "نار", element_icon: "🔥",
+      traits: ["كريم", "واثق", "قيادي", "مبدع"], lucky_color: "الذهبي", lucky_stone: "الياقوت",
+      lucky_day: "الأحد", lucky_number: 1,
+      desc: "مولود الأسد شخصية كاريزمية، يحب الأضواء والقيادة.",
+      love_style: "كريم، يحب الإعجاب، مخلص لكن يحتاج تقديراً",
+      best_match: "القوس", worst_match: "الحوت" },
+    { name: "العذراء", symbol: "♍", dates: "23 أغسطس - 22 سبتمبر", element: "أرض", element_icon: "🌍",
+      traits: ["دقيق", "منظم", "ذكي", "خدوم"], lucky_color: "البيج", lucky_stone: "السافير",
+      lucky_day: "الأربعاء", lucky_number: 5,
+      desc: "مولود العذراء دقيق ومنظم، يهتم بالتفاصيل ويسعى للكمال.",
+      love_style: "دقيق في اختياره، مخلص، يحب الخدمة العملية",
+      best_match: "الثور", worst_match: "الحمل" },
+    { name: "الميزان", symbol: "♎", dates: "23 سبتمبر - 22 أكتوبر", element: "هواء", element_icon: "💨",
+      traits: ["دبلوماسي", "عاشق للسلام", "اجتماعي", "متوازن"], lucky_color: "الأزرق",
+      lucky_stone: "الأوبال", lucky_day: "الجمعة", lucky_number: 6,
+      desc: "مولود الميزان دبلوماسي، يحب التوازن والعدالة والعلاقات المتوازنة.",
+      love_style: "رومانسي، يحتاج شريكاً متوازناً، يكره الصراع",
+      best_match: "الجوزاء", worst_match: "السرطان" },
+    { name: "العقرب", symbol: "♏", dates: "23 أكتوبر - 21 نوفمبر", element: "ماء", element_icon: "💧",
+      traits: ["غامض", "قوي", "مخلص", "شغوف"], lucky_color: "الأحمر الداكن", lucky_stone: "التوباز",
+      lucky_day: "الثلاثاء", lucky_number: 9,
+      desc: "مولود العقرب شخصية عميقة وغامضة، شغوف ومخلص لمن يحب.",
+      love_style: "شغوف جداً، مخلص، يحب بعمق ولا ينسى",
+      best_match: "السرطان", worst_match: "الحمل" },
+    { name: "القوس", symbol: "♐", dates: "22 نوفمبر - 21 ديسمبر", element: "نار", element_icon: "🔥",
+      traits: ["متفائل", "مغامر", "صريح", "محب للحرية"], lucky_color: "البنفسجي",
+      lucky_stone: "الفيروز", lucky_day: "الخميس", lucky_number: 3,
+      desc: "مولود القوس متفائل ومغامر، يحب الحرية والسفر والاكتشاف.",
+      love_style: "صريح جداً، يحب الحرية، يحتاج شريكاً متفاهماً",
+      best_match: "الحمل", worst_match: "الجدي" },
+    { name: "الجدي", symbol: "♑", dates: "22 ديسمبر - 19 يناير", element: "أرض", element_icon: "🌍",
+      traits: ["طموح", "عملي", "منظم", "مسؤول"], lucky_color: "الرمادي", lucky_stone: "العقيق",
+      lucky_day: "السبت", lucky_number: 8,
+      desc: "مولود الجدي طموح وعملي، يسعى دائماً للنجاح والاستقرار.",
+      love_style: "جدّي في الحب، مخلص، يحتاج وقتاً للثقة",
+      best_match: "الثور", worst_match: "الميزان" },
+    { name: "الدلو", symbol: "♒", dates: "20 يناير - 18 فبراير", element: "هواء", element_icon: "💨",
+      traits: ["مبتكر", "مستقل", "إنساني", "ذكي"], lucky_color: "الأزرق الفاتح",
+      lucky_stone: "الجمشت", lucky_day: "السبت", lucky_number: 4,
+      desc: "مولود الدلو مبتكر ومستقل، يفكر خارج الصندوق ويهتم بالإنسانية.",
+      love_style: "مستقل، يحتاج مساحة، مخلص لكن بطريقته",
+      best_match: "الجوزاء", worst_match: "الثور" },
+    { name: "الحوت", symbol: "♓", dates: "19 فبراير - 20 مارس", element: "ماء", element_icon: "💧",
+      traits: ["رومانسي", "حدسي", "فني", "حنون"], lucky_color: "الأخضر البحري",
+      lucky_stone: "الأكوامارين", lucky_day: "الخميس", lucky_number: 7,
+      desc: "مولود الحوت رومانسي وحساس، فني وحدسي، يعيش في عالم من الخيال.",
+      love_style: "رومانسي جداً، حساس، يعطي بلا حدود",
+      best_match: "السرطان", worst_match: "الأسد" },
+];
+
+// ==================== توافق الأبراج ====================
+const ZODIAC_COMPAT = {
+    "الحمل": {"القوس": 95, "الميزان": 85, "الدلو": 85, "الأسد": 75, "الجوزاء": 50, "السرطان": 50, "الحمل": 50, "الجدي": 35, "العذراء": 25, "الحوت": 25, "الثور": 20, "العقرب": 20},
+    "الثور": {"الجدي": 95, "العذراء": 85, "السرطان": 80, "الحوت": 80, "الثور": 75, "الميزان": 75, "العقرب": 75, "الجوزاء": 35, "الأسد": 35, "القوس": 30, "الحمل": 20, "الدلو": 20},
+    "الجوزاء": {"الميزان": 90, "الدلو": 90, "الأسد": 75, "القوس": 75, "الجوزاء": 55, "الجدي": 55, "السرطان": 50, "الحمل": 50, "الحوت": 50, "الثور": 35, "العقرب": 35, "العذراء": 20},
+    "السرطان": {"الجدي": 95, "الحوت": 90, "الثور": 80, "العقرب": 75, "العذراء": 65, "الجوزاء": 60, "الحمل": 50, "السرطان": 50, "الدلو": 50, "الأسد": 35, "الميزان": 20, "القوس": 20},
+    "الأسد": {"القوس": 90, "الحمل": 75, "الجوزاء": 75, "الميزان": 70, "الدلو": 70, "الأسد": 35, "الثور": 35, "السرطان": 35, "العذراء": 25, "الجدي": 25, "العقرب": 20, "الحوت": 15},
+    "العذراء": {"الثور": 85, "الجدي": 85, "السرطان": 65, "العقرب": 65, "الحوت": 65, "العذراء": 45, "الدلو": 35, "الميزان": 30, "القوس": 25, "الأسد": 25, "الجوزاء": 20, "الحمل": 15},
+    "الميزان": {"الجوزاء": 90, "الدلو": 85, "الحمل": 85, "الثور": 75, "الأسد": 70, "القوس": 65, "الميزان": 50, "السرطان": 20, "الجدي": 20, "الحوت": 25, "العقرب": 20, "العذراء": 30},
+    "العقرب": {"السرطان": 75, "الثور": 75, "الحوت": 70, "العذراء": 65, "الجدي": 60, "الميزان": 20, "الحمل": 20, "الأسد": 20, "القوس": 25, "الجوزاء": 35, "الدلو": 30, "العقرب": 50},
+    "القوس": {"الأسد": 90, "الحمل": 95, "الجوزاء": 75, "الميزان": 65, "الدلو": 65, "القوس": 55, "الثور": 30, "السرطان": 20, "العذراء": 25, "الجدي": 35, "الحوت": 25, "العقرب": 25},
+    "الجدي": {"الثور": 95, "السرطان": 95, "العذراء": 85, "العقرب": 60, "الجوزاء": 55, "الحوت": 55, "الجدي": 50, "الحمل": 35, "الدلو": 30, "الأسد": 25, "الميزان": 20, "القوس": 35},
+    "الدلو": {"الجوزاء": 90, "الميزان": 85, "الحمل": 85, "الأسد": 70, "القوس": 65, "السرطان": 50, "الدلو": 45, "الثور": 20, "العقرب": 30, "الجدي": 30, "العذراء": 35, "الحوت": 40},
+    "الحوت": {"السرطان": 90, "الثور": 80, "العقرب": 70, "العذراء": 65, "الجدي": 55, "الميزان": 25, "الحمل": 25, "الأسد": 15, "القوس": 25, "الجوزاء": 50, "الدلو": 40, "الحوت": 55},
+};
+
+// ==================== المحتوى ====================
+const POSITIVES = [
+    "التفاهم المتبادل بينكما عالٍ جداً",
+    "الاحترام المتبادل هو أساس العلاقة",
+    "الحب الصادق يجمعكما",
+    "الاهتمام ببعضكما نابع من القلب",
+    "الثقة المتبادلة لا تهتز",
+    "الدعم في الأوقات الصعبة موجود",
+    "الضحك والسعادة عنوان أيامكما",
+    "التشابه في الطموحات يجمعكما",
+    "لغة الحوار بينكما واضحة",
+    "المشاعر الصادقة لا تحتاج كلاماً",
+    "الرومانسية حاضرة في كل لقاء",
+    "التقدير المتبادل يزيد الحب",
+    "الإخلاص نابع من القلب",
+    "القلب والروح متطابقان",
+    "الغيرة الإيجابية تشعل العلاقة",
+];
+
+const NEGATIVES = [
+    "قد تحتاجان للمزيد من الحوار",
+    "الاختلافات البسيطة تحتاج تفهّماً",
+    "يجب تقليل التسرع في الأحكام",
+    "الصبر مطلوب من الطرفين",
+    "الخلافات الصغيرة طبيعية، لا تكبروها",
+    "الاهتمام بالتفاصيل يعزز العلاقة",
+    "التنازل أحياناً ليس ضعفاً",
+    "الغيرة المفرطة قد تضر",
+    "الثقة تحتاج وقتاً لتبنى",
+    "التواصل المستمر مهم",
+    "الاحترام أساس كل شيء",
+    "المساحة الشخصية ضرورية",
+    "تقدير الجهد المبذول مهم",
+    "الاعتذار عند الخطأ شجاعة",
+    "الوعود يجب أن تُنفَّذ",
+];
+
+const DAILY_TIPS = [
+    "💌 أرسل رسالة حب اليوم بدون مناسبة، ستُحدث فرقاً كبيراً.",
+    "🎁 مفاجأة صغيرة أفضل من هدية كبيرة متأخرة.",
+    "☕ اسأل عن يومه بالتفصيل، الاهتمام بالتفاصيل يثبت الحب.",
+    "📞 اتصل بدلاً من الرسائل، الصوت أدفأ.",
+    "🌸 اذكر صفة تحبها فيه اليوم، الكلمات الصادقة تُحدث السحر.",
+    "🤝 شاركه في قرار صغير، الشعور بالمشاركة يقوي الرابطة.",
+    "🌙 أخبره أنه أول ما تفكر فيه صباحاً وآخر ما تفكر فيه ليلاً.",
+    "💐 لا تنتظر المناسبات لإظهار الحب.",
+    "📸 التقط صورة معاً اليوم، الذكريات كنز.",
+    "🎵 شاركه أغنية تذكرك به.",
+    "😂 اضحكا معاً، الضحك أقوى رابط.",
+    "🍽️ حضّر له شيئاً يحبه.",
+    "💪 شجعه على حلمه.",
+    "🙏 اشكر الله على وجوده في حياتك.",
+    "🌟 أخبره أنه يجعلك أفضل.",
+];
+
+const PERCENT_MESSAGES = [
+    [95, 100, "💕 حب أسطوري! أنتما مثال للعشاق. علاقتكما نادرة وستدوم للأبد!"],
+    [85, 94, "💖 حب قوي جداً! أنتما متوافقان في كل شيء تقريباً. علاقة ناجحة مضمونة!"],
+    [75, 84, "💗 حب رائع! التوافق بينكما عالٍ، وبقليل من الجهد ستكون علاقة مثالية."],
+    [65, 74, "💓 حب جميل! أنتما متوافقان في الأساسيات، لكن تحتاجان لتعميق التفاهم."],
+    [55, 64, "💞 نسبة جيدة! الحب موجود، لكن يحتاج رعاية مستمرة ليزدهر."],
+    [45, 54, "💝 نسبة متوسطة. العلاقة ممكنة، لكن تحتاج جهداً كبيراً من الطرفين."],
+    [35, 44, "💘 نسبة منخفضة. الاختلافات كثيرة، لكن الحب يصنع المعجزات."],
+    [0, 34, "💔 نسبة صعبة. لكن تذكر: النسب لا تحدد الحب. الصدق والعمل هما الأساس."],
+];
+
+const PERCENT_ADVICE = [
+    [95, 100, "حافظا على هذا الحب النادر. الاستمرار في التقدير والاهتمام سيحفظه للأبد."],
+    [85, 94, "علاقتكما قوية. الاهتمام بالتفاصيل الصغيرة سيزيدها قوة."],
+    [75, 84, "حب رائع. تعميقا الحوار والاهتمام ببعضكما يرفع النسبة."],
+    [65, 74, "الأساس جيد. زيادة الوقت معاً والمفاجآت ستعزز العلاقة."],
+    [55, 64, "الحب موجود. تحتاجان للصبر والتفاهم لتحقيق الانسجام الكامل."],
+    [45, 54, "العلاقة تحتاج جهداً. تواصل يومي صادق سيحدث فرقاً."],
+    [35, 44, "الاختلافات كثيرة. حاولا إيجاد نقاط مشتركة، والحب سيصنع الباقي."],
+    [0, 34, "صعبة لكن ليست مستحيلة. الصدق والصبر ستصنع المعجزات."],
+];
+
+// ==================== الإعدادات ====================
+const SETTINGS_KEY = 'abozinad_love_settings';
+let settings = {
+    dark: true,
+    sound: true,
+    stars: true,
+    petals: true,
+    fontSize: 'medium'
+};
+
+function loadSettings() {
+    try {
+        const saved = localStorage.getItem(SETTINGS_KEY);
+        if (saved) settings = { ...settings, ...JSON.parse(saved) };
+    } catch(e) {}
+    applySettings();
+}
+
+function saveSettings() {
+    try { localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings)); } catch(e) {}
+}
+
+function applySettings() {
+    document.body.classList.toggle('light-mode', !settings.dark);
+    document.body.classList.toggle('no-petals', !settings.petals);
+    document.body.classList.remove('font-small', 'font-medium', 'font-large');
+    document.body.classList.add('font-' + settings.fontSize);
+    const starsBg = document.getElementById('stars-bg');
+    if (starsBg) starsBg.style.opacity = settings.stars ? '1' : '0';
+    ['dark', 'sound', 'stars', 'petals'].forEach(key => {
+        const el = document.getElementById('toggle-' + key);
+        if (el) el.classList.toggle('on', settings[key]);
+    });
+    const fontSel = document.getElementById('font-size');
+    if (fontSel) fontSel.value = settings.fontSize;
+}
+
+function toggleSetting(key) {
+    settings[key] = !settings[key];
+    saveSettings();
+    applySettings();
+}
+
+function changeFont(value) {
+    settings.fontSize = value;
+    saveSettings();
+    applySettings();
+}
+
+function resetSettings() {
+    if (confirm('هل تريد إعادة تعيين الإعدادات؟')) {
+        settings = { dark: true, sound: true, stars: true, petals: true, fontSize: 'medium' };
+        saveSettings();
+        applySettings();
+        alert('✅ تم إعادة التعيين');
+    }
+}
+
+// ==================== نجوم ====================
+function createStars() {
+    const bg = document.getElementById('stars-bg');
+    if (!bg) return;
+    bg.innerHTML = '';
+    for (let i = 0; i < 60; i++) {
+        const star = document.createElement('div');
+        star.className = 'star';
+        star.style.left = Math.random() * 100 + '%';
+        star.style.top = Math.random() * 100 + '%';
+        star.style.animationDelay = Math.random() * 3 + 's';
+        const size = (Math.random() * 2 + 1) + 'px';
+        star.style.width = size;
+        star.style.height = size;
+        bg.appendChild(star);
+    }
+}
+
+// ==================== بتلات ====================
+let petalInterval;
+function startPetals() {
+    if (petalInterval) clearInterval(petalInterval);
+    petalInterval = setInterval(() => {
+        if (!settings.petals) return;
+        const petal = document.createElement('div');
+        petal.className = 'petal';
+        petal.textContent = ['🌹', '🌸', '💮', '❤️', '💕'][Math.floor(Math.random() * 5)];
+        petal.style.left = Math.random() * 100 + '%';
+        petal.style.animationDuration = (8 + Math.random() * 6) + 's';
+        petal.style.fontSize = (15 + Math.random() * 15) + 'px';
+        document.body.appendChild(petal);
+        setTimeout(() => petal.remove(), 15000);
+    }, 2500);
+}
+
+// ==================== صوت ====================
+function playSound(freq = 523, duration = 0.5) {
+    if (!settings.sound) return;
+    try {
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.frequency.value = freq;
+        osc.type = 'sine';
+        gain.gain.setValueAtTime(0.1, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + duration);
+        osc.start();
+        osc.stop(ctx.currentTime + duration);
+    } catch(e) {}
+}
+
+// ==================== التنقل ====================
+function showSection(id) {
+    document.querySelectorAll('.section-page').forEach(s => s.classList.remove('active'));
+    document.getElementById('main-menu').style.display = 'none';
+    document.getElementById(id).classList.add('active');
+    window.scrollTo(0, 0);
+    playSound(440, 0.2);
+}
+
+function showMain() {
+    document.querySelectorAll('.section-page').forEach(s => s.classList.remove('active'));
+    document.getElementById('main-menu').style.display = 'block';
+    window.scrollTo(0, 0);
+    playSound(330, 0.2);
+}
+
+// ==================== حقول متقدمة ====================
+function toggleAdvanced() {
+    const el = document.getElementById('advanced-inputs');
+    el.style.display = el.style.display === 'none' ? 'block' : 'none';
+}
+
+// ==================== تبويبات ====================
+function switchTab(el, id) {
+    const parent = el.parentElement.parentElement;
+    parent.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    parent.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+    el.classList.add('active');
+    document.getElementById(id).classList.add('active');
+}
+
+// ==================== دوال حسابية ====================
+function calculateLovePercent(name1, name2) {
+    const s = (name1 + name2).toLowerCase().replace(/\s/g, '');
+    let total = 0;
+    for (let i = 0; i < s.length; i++) total += s.charCodeAt(i);
+    let percent = (total * 7) % 101;
+    if (percent < 40) percent += 30;
+    if (percent > 99) percent = 99;
+    return percent;
+}
+
+function getPercentMessage(percent) {
+    for (const [min, max, msg] of PERCENT_MESSAGES) {
+        if (percent >= min && percent <= max) return msg;
+    }
+    return "❤️ النسب لا تحدد الحب الحقيقي";
+}
+
+function getPercentAdvice(percent) {
+    for (const [min, max, adv] of PERCENT_ADVICE) {
+        if (percent >= min && percent <= max) return adv;
+    }
+    return "الحب الحقيقي يُبنى بالصبر والعمل.";
+}
+
+function getZodiacFromDate(day, month) {
+    const signs = [
+        [1, 20, "الجدي"], [2, 19, "الدلو"], [3, 21, "الحوت"],
+        [4, 20, "الحمل"], [5, 21, "الثور"], [6, 21, "الجوزاء"],
+        [7, 23, "السرطان"], [8, 23, "الأسد"], [9, 23, "العذراء"],
+        [10, 23, "الميزان"], [11, 22, "العقرب"], [12, 22, "القوس"],
+    ];
+    for (const [m, d, sign] of signs) {
+        if (month === m && day >= d) return sign;
+    }
+    for (const [m, d, sign] of signs) {
+        if (month === m - 1 && day < d) return sign;
+    }
+    return "الجدي";
+}
+
+function getZodiacInfo(signName) {
+    return ZODIAC_DATA.find(z => z.name === signName) || ZODIAC_DATA[0];
+}
+
+function getZodiacCompat(s1, s2) {
+    if (ZODIAC_COMPAT[s1] && ZODIAC_COMPAT[s1][s2] !== undefined) return ZODIAC_COMPAT[s1][s2];
+    return 50;
+}
+
+function getSoulmateLetter(name) {
+    const s = name.toLowerCase().replace(/\s/g, '');
+    let total = 0;
+    for (let i = 0; i < s.length; i++) total += s.charCodeAt(i);
+    return String.fromCharCode(65 + (total % 26));
+}
+
+function getAnalysisDetails(name1, name2) {
+    const str = name1 + name2;
+    let hash = 0;
+    for (let i = 0; i < str.length; i++) {
+        hash = ((hash << 5) - hash) + str.charCodeAt(i);
+        hash |= 0;
+    }
+    hash = Math.abs(hash);
+    const pos = [];
+    const neg = [];
+    for (let i = 0; i < 5; i++) pos.push(POSITIVES[(hash + i) % POSITIVES.length]);
+    for (let i = 0; i < 4; i++) neg.push(NEGATIVES[(hash * 3 + i) % NEGATIVES.length]);
+    return { positives: pos, negatives: neg };
+}
+
+// ==================== حساب الحب ====================
+function calculateLove() {
+    const n1 = document.getElementById('name1').value.trim();
+    const n2 = document.getElementById('name2').value.trim();
+    if (!n1 || !n2) { alert('يرجى إدخال الاسمين'); return; }
+    
+    const d1 = document.getElementById('date1').value;
+    const d2 = document.getElementById('date2').value;
+    
+    document.getElementById('processing').style.display = 'block';
+    document.getElementById('result').classList.remove('show');
+    
+    const messages = ['جاري فحص القلوب... ❤️', 'نحلل المشاعر... 💕', 'نحسب التوافق... 💞', 'نقرأ الأبراج... ✨', 'النتيجة تقترب... 💗'];
+    let i = 0, p = 0;
+    
+    const interval = setInterval(() => {
+        p += Math.random() * 10;
+        if (p >= 100) p = 100;
+        document.getElementById('proc-fill').style.width = p + '%';
+        document.getElementById('proc-percent').textContent = Math.floor(p) + '%';
+        if (p > i * 20 && i < messages.length) {
+            document.getElementById('proc-text').textContent = messages[i];
+            i++;
+        }
+        if (p >= 100) clearInterval(interval);
+    }, 200);
+    
+    setTimeout(() => {
+        document.getElementById('processing').style.display = 'none';
+        
+        const percent = calculateLovePercent(n1, n2);
+        const message = getPercentMessage(percent);
+        const advice = getPercentAdvice(percent);
+        const details = getAnalysisDetails(n1, n2);
+        
+        let z1 = null, z2 = null, compat = null;
+        if (d1) {
+            const parts = d1.split('-').map(Number);
+            const sign = getZodiacFromDate(parts[2], parts[1]);
+            z1 = getZodiacInfo(sign);
+        }
+        if (d2) {
+            const parts = d2.split('-').map(Number);
+            const sign = getZodiacFromDate(parts[2], parts[1]);
+            z2 = getZodiacInfo(sign);
+        }
+        if (z1 && z2) compat = getZodiacCompat(z1.name, z2.name);
+        
+        displayLoveResult(percent, message, advice, details, z1, z2, compat, n1, n2);
+    }, 3000);
+}
+
+function displayLoveResult(percent, message, advice, details, z1, z2, compat, n1, n2) {
+    document.getElementById('result-names').textContent = n1 + ' ❤️ ' + n2;
+    
+    const ring = document.getElementById('percent-ring');
+    const num = document.getElementById('percent-num');
+    let cur = 0;
+    const step = percent / 60;
+    const anim = setInterval(() => {
+        cur += step;
+        if (cur >= percent) { cur = percent; clearInterval(anim); }
+        const p = Math.floor(cur);
+        ring.style.background = `conic-gradient(#d4af7a ${p}%, rgba(212,175,122,0.1) ${p}%)`;
+        num.textContent = p + '%';
+    }, 25);
+    
+    playSound(660, 0.6);
+    document.getElementById('result-message').textContent = message;
+    
+    const posList = document.getElementById('positives-list');
+    posList.innerHTML = '';
+    details.positives.forEach(p => {
+        const li = document.createElement('li');
+        li.textContent = p;
+        posList.appendChild(li);
+    });
+    
+    const negList = document.getElementById('negatives-list');
+    negList.innerHTML = '';
+    details.negatives.forEach(n => {
+        const li = document.createElement('li');
+        li.className = 'neg';
+        li.textContent = n;
+        negList.appendChild(li);
+    });
+    
+    document.getElementById('z1-display').innerHTML = z1 ? renderZodiacCard(z1) : '<p style="color:#8b6f8f;text-align:center;font-size:13px;padding:15px;">لم يتم إدخال تاريخ الميلاد</p>';
+    document.getElementById('z2-display').innerHTML = z2 ? renderZodiacCard(z2) : '<p style="color:#8b6f8f;text-align:center;font-size:13px;padding:15px;">لم يتم إدخال تاريخ الميلاد</p>';
+    
+    if (compat !== null) {
+        document.getElementById('compat-display').style.display = 'block';
+        document.getElementById('compat-value').textContent = compat + '%';
+    }
+    
+    document.getElementById('advice-text').textContent = advice;
+    document.getElementById('result').classList.add('show');
+    setTimeout(() => document.getElementById('result').scrollIntoView({behavior: 'smooth'}), 300);
+}
+
+function renderZodiacCard(z) {
+    return `
+        <div class="zodiac-symbol-big">${z.symbol}</div>
+        <div class="zodiac-name-big">${z.name}</div>
+        <div class="zodiac-dates-big">${z.dates}</div>
+        <div class="zodiac-element">${z.element_icon} ${z.element}</div>
+        <div class="zodiac-desc-text">${z.desc}</div>
+        <div class="traits-grid">${z.traits.map(t => `<span class="trait-badge">${t}</span>`).join('')}</div>
+    `;
+}
+
+function shareResult() {
+    const names = document.getElementById('result-names').textContent;
+    const percent = document.getElementById('percent-num').textContent;
+    const msg = document.getElementById('result-message').textContent;
+    const text = `❤️ نسبة الحب\n${names}\n${percent}\n${msg}\n\nجربها بنفسك! 💕`;
+    if (navigator.share) {
+        navigator.share({title: 'Abo Zinad Love', text: text}).catch(()=>{});
+    } else {
+        navigator.clipboard.writeText(text).then(()=>alert('✅ تم النسخ!')).catch(()=>alert(text));
+    }
+}
+
+// ==================== معرفة البرج ====================
+function findZodiac() {
+    const date = document.getElementById('find-date').value;
+    if (!date) { alert('يرجى إدخال تاريخ الميلاد'); return; }
+    
+    const parts = date.split('-').map(Number);
+    const sign = getZodiacFromDate(parts[2], parts[1]);
+    const z = getZodiacInfo(sign);
+    
+    playSound(523, 0.4);
+    
+    document.getElementById('find-result').style.display = 'block';
+    document.getElementById('find-result').innerHTML = `
+        <div class="zodiac-display">
+            <div class="zodiac-symbol-big">${z.symbol}</div>
+            <div class="zodiac-name-big">${z.name}</div>
+            <div class="zodiac-dates-big">${z.dates}</div>
+            <div class="zodiac-element">${z.element_icon} ${z.element}</div>
+            <div class="zodiac-desc-text">${z.desc}</div>
+            <div class="traits-grid">${z.traits.map(t => `<span class="trait-badge">${t}</span>`).join('')}</div>
+        </div>
+        <div style="margin-top:15px;">
+            <div class="info-row"><span class="info-label">💎 الحجر</span><span class="info-value">${z.lucky_stone}</span></div>
+            <div class="info-row"><span class="info-label">🎨 اللون</span><span class="info-value">${z.lucky_color}</span></div>
+            <div class="info-row"><span class="info-label">📅 اليوم</span><span class="info-value">${z.lucky_day}</span></div>
+            <div class="info-row"><span class="info-label">🔢 الرقم</span><span class="info-value">${z.lucky_number}</span></div>
+            <div class="info-row"><span class="info-label">💕 أسلوب الحب</span><span class="info-value" style="font-size:11px;">${z.love_style}</span></div>
+            <div class="info-row"><span class="info-label">💖 أفضل توافق</span><span class="info-value">${z.best_match}</span></div>
+            <div class="info-row"><span class="info-label">💔 أسوأ توافق</span><span class="info-value">${z.worst_match}</span></div>
+        </div>
+    `;
+}
+
+// ==================== توافق الأبراج ====================
+function loadZodiacOptions() {
+    ZODIAC_DATA.forEach(z => {
+        ['compat-1', 'compat-2'].forEach(id => {
+            const opt = document.createElement('option');
+            opt.value = z.name;
+            opt.textContent = z.symbol + ' ' + z.name;
+            document.getElementById(id).appendChild(opt);
+        });
+    });
+}
+
+function calculateCompat() {
+    const s1 = document.getElementById('compat-1').value;
+    const s2 = document.getElementById('compat-2').value;
+    
+    if (!s1 || !s2) { alert('يرجى اختيار البرجين'); return; }
+    
+    const z1 = getZodiacInfo(s1);
+    const z2 = getZodiacInfo(s2);
+    const percent = getZodiacCompat(s1, s2);
+    
+    playSound(587, 0.5);
+    
+    let compat_text = '';
+    if (percent >= 85) compat_text = '💕 توافق ممتاز! علاقة ناجحة ومستقرة';
+    else if (percent >= 70) compat_text = '💖 توافق جيد جداً! علاقة واعدة';
+    else if (percent >= 55) compat_text = '💗 توافق جيد، يحتاج بعض الجهد';
+    else if (percent >= 40) compat_text = '💓 توافق متوسط، يحتاج تفاهم';
+    else compat_text = '💔 توافق منخفض، يحتاج جهداً كبيراً';
+    
+    document.getElementById('compat-result').style.display = 'block';
+    document.getElementById('compat-result').innerHTML = `
+        <div class="zodiac-display">
+            <div style="display:flex;justify-content:center;align-items:center;gap:15px;margin-bottom:15px;">
+                <div style="text-align:center;">
+                    <div style="font-size:50px;">${z1.symbol}</div>
+                    <div style="color:#d4af7a;font-size:12px;">${z1.name}</div>
+                </div>
+                <div style="font-size:30px;">💞</div>
+                <div style="text-align:center;">
+                    <div style="font-size:50px;">${z2.symbol}</div>
+                    <div style="color:#d4af7a;font-size:12px;">${z2.name}</div>
+                </div>
+            </div>
+            <div class="percent-ring" style="background: conic-gradient(#d4af7a ${percent}%, rgba(212,175,122,0.1) ${percent}%);">
+                <div class="percent-num">${percent}%</div>
+            </div>
+            <div style="color:#f5e6d3;font-size:14px;text-align:center;margin-top:15px;line-height:1.7;">${compat_text}</div>
+        </div>
+    `;
+}
+
+// ==================== معلومات الأبراج ====================
+function loadZodiacGrid() {
+    const grid = document.getElementById('zodiac-grid');
+    if (!grid) return;
+    grid.innerHTML = '';
+    ZODIAC_DATA.forEach(z => {
+        const div = document.createElement('div');
+        div.className = 'zodiac-mini';
+        div.innerHTML = `
+            <div class="zodiac-mini-symbol">${z.symbol}</div>
+            <div class="zodiac-mini-name">${z.name}</div>
+        `;
+        div.onclick = () => showZodiacDetail(z);
+        grid.appendChild(div);
+    });
+}
+
+function showZodiacDetail(z) {
+    playSound(440, 0.3);
+    const detail = document.getElementById('zodiac-detail');
+    detail.style.display = 'block';
+    detail.innerHTML = `
+        <div class="zodiac-display">
+            <div class="zodiac-symbol-big">${z.symbol}</div>
+            <div class="zodiac-name-big">${z.name}</div>
+            <div class="zodiac-dates-big">${z.dates}</div>
+            <div class="zodiac-element">${z.element_icon} ${z.element}</div>
+            <div class="zodiac-desc-text">${z.desc}</div>
+            <div class="traits-grid">${z.traits.map(t => `<span class="trait-badge">${t}</span>`).join('')}</div>
+        </div>
+        <div style="margin-top:12px;">
+            <div class="info-row"><span class="info-label">💎 الحجر</span><span class="info-value">${z.lucky_stone}</span></div>
+            <div class="info-row"><span class="info-label">🎨 اللون</span><span class="info-value">${z.lucky_color}</span></div>
+            <div class="info-row"><span class="info-label">📅 اليوم</span><span class="info-value">${z.lucky_day}</span></div>
+            <div class="info-row"><span class="info-label">🔢 الرقم</span><span class="info-value">${z.lucky_number}</span></div>
+            <div class="info-row"><span class="info-label">💕 أسلوب الحب</span><span class="info-value" style="font-size:11px;">${z.love_style}</span></div>
+            <div class="info-row"><span class="info-label">💖 أفضل توافق</span><span class="info-value">${z.best_match}</span></div>
+        </div>
+    `;
+    setTimeout(() => detail.scrollIntoView({behavior: 'smooth'}), 200);
+}
+
+// ==================== شريك الروح ====================
+function findSoulmate() {
+    const name = document.getElementById('soul-name').value.trim();
+    if (!name) { alert('يرجى إدخال اسمك'); return; }
+    
+    const letter = getSoulmateLetter(name);
+    
+    playSound(698, 0.6);
+    
+    document.getElementById('soulmate-letter').textContent = letter;
+    document.getElementById('soulmate-box').classList.add('show');
+    setTimeout(() => document.getElementById('soulmate-box').scrollIntoView({behavior: 'smooth'}), 200);
+}
+
+// ==================== نصيحة اليوم ====================
+function newTip() {
+    const tip = DAILY_TIPS[Math.floor(Math.random() * DAILY_TIPS.length)];
+    document.getElementById('daily-tip-text').textContent = tip;
+    playSound(523, 0.3);
+}
+
+// ==================== تسجيل Service Worker ====================
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/service-worker.js')
+            .then((reg) => console.log('SW registered:', reg.scope))
+            .catch((err) => console.log('SW failed:', err));
+    });
+}
+
+// ==================== التهيئة ====================
+window.addEventListener('DOMContentLoaded', () => {
+    loadSettings();
+    createStars();
+    startPetals();
+    loadZodiacOptions();
+    loadZodiacGrid();
+    newTip();
+    console.log('%c❤️ Abo Zinad Love v1.0.0', 'color:#8B0A2E; font-size:20px; font-weight:bold;');
+    console.log('%cMade with love by Abo Zinad', 'color:#d4af7a; font-size:14px;');
+});
+</script>
+</body>
+</html>
+
