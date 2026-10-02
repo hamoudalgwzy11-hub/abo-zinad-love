@@ -1,28 +1,40 @@
 {
-  "name": "Abo Zinad Love",
-  "short_name": "AboZinad Love",
-  "description": "تطبيق نسبة الحب والأبراج - صنع بحب",
-  "start_url": "/abo-zinad-love/",
-  "scope": "/abo-zinad-love/",
+  "background_color": "#ffffff",
+  "description": "Abo Zinad Love - تطبيق نسبة الحب والأبراج",
+  "dir": "ltr",
   "display": "standalone",
-  "orientation": "portrait",
-  "background_color": "#0a0510",
-  "theme_color": "#0B0A2E",
-  "lang": "ar",
-  "dir": "rtl",
+  "name": "Abo Zinad Love",
+  "orientation": "any",
+  "scope": "/",
+  "short_name": "Abo Zinad Love",
+  "start_url": "/",
+  "theme_color": "#8B0A2E",
   "icons": [
     {
-      "src": "/abo-zinad-love/icon-192.png",
-      "sizes": "192x192",
+      "src": "https://hamoudalgwzy11-hub.github.io/icon-192.png",
       "type": "image/png",
-      "purpose": "any maskable"
+      "sizes": "192x192",
+      "isSquare": true,
+      "isPng": true,
+      "isWebp": false,
+      "isJpg": false,
+      "width": 192,
+      "is512x512": false,
+      "is256x256": false,
+      "is192x192": true
     },
     {
-      "src": "/abo-zinad-love/icon-512.png",
-      "sizes": "512x512",
+      "src": "https://hamoudalgwzy11-hub.github.io/icon-512.png",
       "type": "image/png",
-      "purpose": "any maskable"
+      "sizes": "512x512",
+      "isSquare": true,
+      "isPng": true,
+      "isWebp": false,
+      "isJpg": false,
+      "width": 512,
+      "is512x512": true,
+      "is256x256": false,
+      "is192x192": false
     }
-  ],
-  "categories": ["entertainment", "lifestyle", "social"]
+  ]
 }
