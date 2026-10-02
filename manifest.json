@@ -2,14 +2,14 @@
   "name": "Abo Zinad Love",
   "short_name": "AboZinad Love",
   "description": "تطبيق نسبة الحب والأبراج - صُنع بحب",
-  "start_url": "/",
+  "start_url": "/abo-zinad-love/",
   "display": "standalone",
   "orientation": "portrait",
   "background_color": "#0a0510",
   "theme_color": "#8B0A2E",
   "lang": "ar",
   "dir": "rtl",
-  "scope": "/",
+  "scope": "/abo-zinad-love/",
   "icons": [
     {
       "src": "icon-192.png",
